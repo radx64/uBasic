@@ -40,7 +40,7 @@ TEST_F(LexerShould, detectErrorOnGarbageSource)
     EXPECT_EQ(expected, tokens);
 }
 
-TEST_F(LexerShould, detectSingleCharacterNUMBER)
+TEST_F(LexerShould, detectSingleCharacterNumber)
 {
     auto tokens = lexer_.tokenize("1");
     auto expected = TokenList{
@@ -50,7 +50,7 @@ TEST_F(LexerShould, detectSingleCharacterNUMBER)
     EXPECT_EQ(expected, tokens);
 }
 
-TEST_F(LexerShould, detectMultipleCharacterNUMBER)
+TEST_F(LexerShould, detectMultipleCharacterNumber)
 {
     auto tokens = lexer_.tokenize("1234");
     auto expected = TokenList{
@@ -115,6 +115,49 @@ TEST_F(LexerShould, detectDivideOperator)
         {Type::DIVIDE},
         {Type::NUMBER, "2"},
         {Type::ENDOFFILE, ""}
+    };
+    EXPECT_EQ(expected, tokens);
+}
+
+TEST_F(LexerShould, detectSingleCharacterString)
+{
+    auto tokens = lexer_.tokenize("\"R\"");
+    auto expected = TokenList{
+        {Type::STRING, "R"},
+        {Type::ENDOFFILE, ""}
+    };
+    EXPECT_EQ(expected, tokens);
+}
+
+TEST_F(LexerShould, detectMultiCharacterString)
+{
+    auto tokens = lexer_.tokenize("\"Radek was here\"");
+    auto expected = TokenList{
+        {Type::STRING, "Radek was here"},
+        {Type::ENDOFFILE, ""}
+    };
+    EXPECT_EQ(expected, tokens);
+}
+
+TEST_F(LexerShould, detectErrorWithStringWhenMissingClosingQuote)
+{
+    auto tokens = lexer_.tokenize("\"Radek was here");
+    auto expected = TokenList{
+        {Type::ERROR, "missing \" at end of a string starting at 0"},
+    };
+    EXPECT_EQ(expected, tokens);
+}
+
+TEST_F(LexerShould, detectErrorWithStringWhenMissingClosingQuoteInMoreComplexSentence)
+{
+    auto tokens = lexer_.tokenize("10+20*30 \"Radek was here");
+    auto expected = TokenList{
+        {Type::NUMBER, "10"},
+        {Type::PLUS},
+        {Type::NUMBER, "20"},
+        {Type::MULTIPLY},
+        {Type::NUMBER, "30"},      
+        {Type::ERROR, "missing \" at end of a string starting at 9"},
     };
     EXPECT_EQ(expected, tokens);
 }

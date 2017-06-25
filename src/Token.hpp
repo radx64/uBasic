@@ -12,7 +12,8 @@ enum class Type
     PLUS,
     MINUS,
     MULTIPLY,
-    DIVIDE
+    DIVIDE,
+    STRING
 };
 
 std::string toString(const Type& type);

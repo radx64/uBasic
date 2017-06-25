@@ -44,8 +44,7 @@ private:
                 number += *(position_ + 1);
                 position_++;
             }
-            token = Token(Type::NUMBER, std::string("") + number);
-
+            token = Token(Type::NUMBER, number);
         }
         else if ((*position_) == '+')
         {
@@ -63,16 +62,31 @@ private:
         {
             token = Token(Type::DIVIDE);
         }
-
         else if ((*position_) == '\0')
         {
             position_++;
             return token;
    
         }
+        else if ((*position_) == '\"')
+        {
+            auto beginQuoteIndex = std::distance(source_.begin(), position_);
+            std::string str("");
+            position_++;
+            while( (*position_) != '\"')
+            {
+                if (*(position_) == '\0')
+                {
+                    return Token(Type::ERROR, std::string("missing \" at end of a string starting at ") + std::to_string(beginQuoteIndex));
+                }
+                str += *position_;
+                position_++;
+            }
+            token = Token(Type::STRING, str);
+        }
         else
         {
-            token = Token(Type::ERROR, std::string("at position ") + std::to_string(std::distance(source_.begin(), position_)));
+            return Token(Type::ERROR, std::string("at position ") + std::to_string(std::distance(source_.begin(), position_)));
         }
 
         position_++;

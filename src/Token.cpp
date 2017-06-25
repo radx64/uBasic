@@ -13,6 +13,7 @@ std::string toString(const Type& type)
         case Type::MINUS      : return "MINUS";
         case Type::MULTIPLY   : return "MULTIPLY";
         case Type::DIVIDE     : return "DIVIDE";
+        case Type::STRING     : return "STRING";
         default               : return "UNKNOWN";
     }
 }
@@ -25,7 +26,6 @@ Token::Token(Type type): type_(type), value_("")
 {
 
 }
-
 
 std::string Token::toString() const
 {
