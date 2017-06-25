@@ -1,5 +1,9 @@
-file(GLOB_RECURSE SRC
+file(GLOB_RECURSE TESTS_SRC
     "./*.cpp"
+)
+
+file(GLOB_RECURSE SRC
+    "../src/*.cpp"
 )
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
@@ -10,5 +14,5 @@ add_definitions(-std=c++11)
 add_definitions(-O0)
 
 add_subdirectory (gtest)
-add_executable(UT main.cpp ${SRC})
+add_executable(UT main.cpp ${TESTS_SRC} ${SRC})
 target_link_libraries (UT -pthread gtest)

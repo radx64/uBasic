@@ -19,6 +19,10 @@ if (NOT CONFIGURED_ONCE)
 endif()
 
 add_subdirectory (src)
+
+add_executable(uBasic main.cpp)
+target_link_libraries (uBasic interpreter)
+
 add_subdirectory (test)
 
 set(CONFIGURED_ONCE TRUE CACHE INTERNAL

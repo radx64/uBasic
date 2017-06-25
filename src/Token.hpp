@@ -8,8 +8,11 @@ enum class Type
 {
     ENDOFFILE,
     ERROR,
-    INTEGER,
-    OPERATOR
+    NUMBER,
+    PLUS,
+    MINUS,
+    MULTIPLY,
+    DIVIDE
 };
 
 std::string toString(const Type& type);
@@ -17,16 +20,20 @@ std::string toString(const Type& type);
 class Token
 {
 public:
+    Token(Type type);
     Token(Type type, std::string value);
 
-    std::string toString();
-    Type getType();
-    std::string getValue();
+    std::string toString() const; 
+    Type getType() const;
+    std::string getValue() const;
+    friend bool operator==(const Token lhs, const Token rhs);
 
 private:
     Type type_;
     std::string value_;
 };
+
+bool operator==(const Token lhs, const Token rhs);
 
 using TokenList = std::list<Token>;
 

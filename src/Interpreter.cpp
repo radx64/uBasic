@@ -3,7 +3,7 @@
 #include <cctype>
 #include <iostream>
 
-#include "Tokenizer.hpp"
+#include "Lexer.hpp"
 
 Interpreter::Interpreter()
 {
@@ -19,9 +19,9 @@ void Interpreter::run(std::string program)
 
     tokens_.clear();
 
-    Tokenizer t;
+    Lexer lex;
 
-    tokens_ = t.tokenize(program);
+    tokens_ = lex.tokenize(program);
     evaluate();
 }
 
@@ -45,16 +45,9 @@ Token Interpreter::eat(Type t)
 
 void Interpreter::evaluate()
 {
-    int arg1 = std::stoi(eat(Type::INTEGER).getValue());
-    std::string oper = eat(Type::OPERATOR).getValue();
-    int arg2 = std::stoi(eat(Type::INTEGER).getValue());
+    int arg1 = std::stoi(eat(Type::NUMBER).getValue());
+    eat(Type::PLUS);
+    int arg2 = std::stoi(eat(Type::NUMBER).getValue());
 
-    switch (oper[0])
-    {
-        case '+' : std::cout << arg1 + arg2 << std::endl; break;
-        case '-' : std::cout << arg1 - arg2 << std::endl; break;
-        case '*' : std::cout << arg1 * arg2 << std::endl; break;
-        case '/' : std::cout << arg1 / arg2 << std::endl; break;
-        default : std::cout << "Unknown operand" << std::endl; break;
-    }
+    std::cout << arg1 + arg2 << std::endl;
 }
