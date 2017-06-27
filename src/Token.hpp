@@ -6,14 +6,28 @@
 
 enum class Type
 {
-    ENDOFFILE,
+    //Valued eLements
     ERROR,
     NUMBER,
-    PLUS,
+    STRING,
+    VARIABLE,
+    //Non valued elements
+    DIVIDE,
+    ENDOFFILE,
     MINUS,
     MULTIPLY,
-    DIVIDE,
-    STRING
+    PLUS,
+    //Keywords
+    END,
+    FOR,
+    GOTO,
+    IF,
+    INPUT,
+    LET,
+    LIST,
+    NEXT,
+    PRINT,
+    RUN,
 };
 
 std::string toString(const Type& type);

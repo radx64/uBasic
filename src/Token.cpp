@@ -14,6 +14,17 @@ std::string toString(const Type& type)
         case Type::MULTIPLY   : return "MULTIPLY";
         case Type::DIVIDE     : return "DIVIDE";
         case Type::STRING     : return "STRING";
+        case Type::END        : return "END";
+        case Type::FOR        : return "FOR";
+        case Type::GOTO       : return "GOTO";
+        case Type::IF         : return "IF";
+        case Type::INPUT      : return "INPUT";
+        case Type::LET        : return "LET";
+        case Type::LIST       : return "LIST";
+        case Type::NEXT       : return "NEXT";
+        case Type::PRINT      : return "PRINT";
+        case Type::RUN        : return "RUN";
+        case Type::VARIABLE   : return "VARIABLE";        
         default               : return "UNKNOWN";
     }
 }
