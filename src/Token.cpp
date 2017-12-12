@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-std::string toString(const Type& type)
+const std::string toString(const Type& type)
 {
     switch (type)
     {
@@ -38,17 +38,17 @@ Token::Token(Type type): type_(type), value_("")
 
 }
 
-std::string Token::toString() const
+const std::string Token::toString() const
 {
     return std::string("{") + ::toString(type_) + ", " + value_ + "}";
 }
 
-Type Token::getType() const
+const Type& Token::getType() const
 {
     return type_;
 }
 
-std::string Token::getValue() const
+const std::string& Token::getValue() const
 {
     return value_;
 }

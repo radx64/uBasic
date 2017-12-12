@@ -6,11 +6,18 @@
 
 #include "Token.hpp"
 
+// TODO:
+// need to introduce some AST
+// expr   : term ((PLUS | MINUS) term)*
+// term   : factor ((MUL | DIV) factor)*
+// factor : INTEGER | LPAREN expr RPAREN
+
 class Interpreter
 {
 public:
-    Interpreter();
+    Interpreter() = default;
     void run(std::string program);
+    Type getNextTokenType();
 
 private:
     void evaluate();

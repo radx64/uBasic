@@ -30,7 +30,7 @@ enum class Type
     RUN,
 };
 
-std::string toString(const Type& type);
+const std::string toString(const Type& type); // this will be removed
 
 class Token
 {
@@ -38,9 +38,9 @@ public:
     Token(Type type);
     Token(Type type, std::string value);
 
-    std::string toString() const; 
-    Type getType() const;
-    std::string getValue() const;
+    const std::string toString() const;
+    const Type& getType() const;
+    const std::string& getValue() const;
     friend bool operator==(const Token lhs, const Token rhs);
 
 private:

@@ -5,11 +5,6 @@
 
 #include "Lexer.hpp"
 
-Interpreter::Interpreter()
-{
-
-}
-
 void Interpreter::run(std::string program)
 {
     std::cout << "Parsing:" << std::endl;
@@ -43,8 +38,21 @@ Token Interpreter::eat(Type t)
     }
 }
 
+Type Interpreter::getNextTokenType()
+{
+    return tokens_.front().getType();
+}
+
 void Interpreter::evaluate()
 {
+    auto firstTokenType = getNextTokenType();
+
+    switch(firstTokenType)
+    {
+        case Type::NUMBER : break;
+        default: break;
+    }
+
     int arg1 = std::stoi(eat(Type::NUMBER).getValue());
     eat(Type::PLUS);
     int arg2 = std::stoi(eat(Type::NUMBER).getValue());
