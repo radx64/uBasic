@@ -5,12 +5,15 @@
 
 #include "Lexer.hpp"
 
+Interpreter::Interpreter(std::ostream& output_stream) : output_stream_(output_stream)
+{}
+
 void Interpreter::run(std::string program)
 {
-    std::cout << "Parsing:" << std::endl;
-    std::cout << "----------------------" << std::endl;
-    std::cout << program << std::endl;
-    std::cout << "----------------------" << std::endl;
+    std::clog << "Parsing:\n";
+    std::clog << "----------------------\n";
+    std::clog << program << "\n";
+    std::clog << "----------------------" << std::endl;
 
     tokens_.clear();
 
@@ -45,6 +48,11 @@ Type Interpreter::getNextTokenType()
 
 void Interpreter::evaluate()
 {
+    for (const auto& token : tokens_)
+    {
+        std::clog << toString(token.getType()) << std::endl;
+    }
+
     auto firstTokenType = getNextTokenType();
 
     switch(firstTokenType)
@@ -57,5 +65,5 @@ void Interpreter::evaluate()
     eat(Type::PLUS);
     int arg2 = std::stoi(eat(Type::NUMBER).getValue());
 
-    std::cout << arg1 + arg2 << std::endl;
+    output_stream_ << arg1 + arg2 << std::endl;
 }

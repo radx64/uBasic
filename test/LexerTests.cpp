@@ -19,7 +19,6 @@ class LexerShould : public ::testing::Test
 {
 protected:
     Lexer lexer_;
-
 };
 
 TEST_F(LexerShould, detectEOFonEmptySource)

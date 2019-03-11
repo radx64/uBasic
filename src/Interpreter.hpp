@@ -3,7 +3,7 @@
 
 #include <list>
 #include <string>
-
+#include <ostream>
 #include "Token.hpp"
 
 // TODO:
@@ -15,7 +15,7 @@
 class Interpreter
 {
 public:
-    Interpreter() = default;
+    Interpreter(std::ostream& output_stream);
     void run(std::string program);
     Type getNextTokenType();
 
@@ -23,6 +23,7 @@ private:
     void evaluate();
     Token eat(Type t);
     TokenList tokens_; 
+    std::ostream& output_stream_;
 };
 
 #endif  // INTERPRETER_HPP_
