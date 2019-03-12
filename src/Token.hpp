@@ -39,8 +39,8 @@ public:
     Token(Type type, std::string value);
 
     const std::string toString() const;
-    const Type& getType() const;
-    const std::string& getValue() const;
+    virtual const Type& getType() const;
+    virtual const std::string& getValue() const;
     friend bool operator==(const Token lhs, const Token rhs);
 
 private:

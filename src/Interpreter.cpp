@@ -3,7 +3,9 @@
 #include <cctype>
 #include <iostream>
 
+#include "Expression.hpp"
 #include "Lexer.hpp"
+#include "Parser.hpp"
 
 Interpreter::Interpreter(std::ostream& output_stream) : output_stream_(output_stream)
 {}
@@ -14,13 +16,14 @@ void Interpreter::run(std::string program)
     std::clog << "----------------------\n";
     std::clog << program << "\n";
     std::clog << "----------------------" << std::endl;
-
     tokens_.clear();
-
     Lexer lex;
-
     tokens_ = lex.tokenize(program);
+    parse_tree_ = Parser::build(tokens_);
+    std::clog << "Some debug parse tree below"<< std::endl;
+    Parser::debug_traverse_tree(parse_tree_, 0);
     evaluate();
+    Parser::destroy(parse_tree_);
 }
 
 Token Interpreter::eat(Type t)
@@ -46,24 +49,7 @@ Type Interpreter::getNextTokenType()
     return tokens_.front().getType();
 }
 
+
 void Interpreter::evaluate()
 {
-    for (const auto& token : tokens_)
-    {
-        std::clog << toString(token.getType()) << std::endl;
-    }
-
-    auto firstTokenType = getNextTokenType();
-
-    switch(firstTokenType)
-    {
-        case Type::NUMBER : break;
-        default: break;
-    }
-
-    int arg1 = std::stoi(eat(Type::NUMBER).getValue());
-    eat(Type::PLUS);
-    int arg2 = std::stoi(eat(Type::NUMBER).getValue());
-
-    output_stream_ << arg1 + arg2 << std::endl;
 }

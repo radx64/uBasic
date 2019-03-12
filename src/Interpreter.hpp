@@ -6,11 +6,7 @@
 #include <ostream>
 #include "Token.hpp"
 
-// TODO:
-// need to introduce some AST
-// expr   : term ((PLUS | MINUS) term)*
-// term   : factor ((MUL | DIV) factor)*
-// factor : INTEGER | LPAREN expr RPAREN
+class Expression;
 
 class Interpreter
 {
@@ -22,7 +18,8 @@ public:
 private:
     void evaluate();
     Token eat(Type t);
-    TokenList tokens_; 
+    TokenList tokens_;
+    Expression* parse_tree_;
     std::ostream& output_stream_;
 };
 
