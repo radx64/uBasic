@@ -36,6 +36,18 @@ TEST_F(InterpreterShould, addTwoNumbersWithSpaces)
 
 TEST_F(InterpreterShould, addThreeNumbers)
 {
-    interpreter_.run("2+2+2");
+    interpreter_.run("1 + 2 + 3");
     EXPECT_EQ(sanitize(output_.str()), "6");
+}
+
+TEST_F(InterpreterShould, multiplyAndAddInCorrectOrder)
+{
+    interpreter_.run("1 + 2 * 3");
+    EXPECT_EQ(sanitize(output_.str()), "7");
+}
+
+TEST_F(InterpreterShould, multiplyAndAddInCorrectOrderWhenMultiplicationFirst)
+{
+    interpreter_.run("1 * 2 + 3");
+    EXPECT_EQ(sanitize(output_.str()), "7");
 }
