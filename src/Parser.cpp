@@ -9,8 +9,6 @@ Expression* Parser::build(const std::list<Token>& tokens)
     Expression* current_node = new Expression;
     for (const auto& token : tokens)
     {
-        std::clog << token.toString() << std::endl;
-
         if (token.getType() == Type::NUMBER)
         {
             if (current_node->left_child != nullptr)
