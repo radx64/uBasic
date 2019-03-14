@@ -107,5 +107,32 @@ TEST(ParserShould, createCorrectTreeForPlusAndMultiplyOperators)
 
     EXPECT_EQ(right_branch->right_child->value, Token(Type::NUMBER, "3"));
     EXPECT_EQ(right_branch->right_child->parent->value, Token(Type::MULTIPLY)); 
+
+    Parser::destroy(expression);
+}
+
+TEST(ParserShould, DISABLED_handleMultipleOperatorsInCorrectOrder)
+{
+    std::list<Token> input = 
+    {
+        Token{Type::NUMBER, "1"},
+        Token{Type::PLUS},
+        Token{Type::NUMBER, "2"},
+        Token{Type::MULTIPLY},
+        Token{Type::NUMBER, "3"},
+        Token{Type::PLUS},
+        Token{Type::NUMBER, "4"}
+    };
+    Expression* expression = Parser::build(input);
+
+    /* Expected parse tree 
+          +
+         + 4         
+        1 *
+         2 3
+    */
+
+    Parser::debug_traverse_tree(expression, 0);
+
     Parser::destroy(expression);
 }

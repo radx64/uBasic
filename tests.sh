@@ -1,3 +1,3 @@
 #!/bin/bash
 cd build
-./test/UT
+time ./test/UT

@@ -1,5 +1,6 @@
 set(projectName "uBasic")
 cmake_minimum_required (VERSION 2.6)
+set(CMAKE_BUILD_TYPE Debug)
 project (${projectName})
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" OR

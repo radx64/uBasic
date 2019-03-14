@@ -4,6 +4,49 @@
 #include "Expression.hpp"
 #include "Token.hpp"
 
+/*
+    push_node_to_left_with_token moves given node down and create one from token
+    [1]  -> Token(+) ->  [+]
+                        1
+    Pointer passed to function will be modified (so *& is necessary)
+*/
+
+void push_node_to_left_with_token(Expression*& node, const Token& token)
+{
+    Expression* new_node = new Expression;
+    node->parent = new_node;
+    Expression* old_node = node;
+    node = new_node;
+    node->value = token;
+    node->left_child = old_node;
+}
+
+/*
+    push_right_node_deeper_and_replace_with moves right child of given node down and create one from token
+    [+]  -> Token(*) ->    +
+    1 1                  1 [*]
+                          1
+    Pointer passed to function will be modified (so *& is necessary)
+*/
+
+/*
+    TODO: With proper usage of push_node_to_left_with_token same behaviour can be achieved, 
+    so I need to think about using it.Also i need better way to keep track of current node, 
+    at least to be deterministic.
+*/
+
+void push_right_node_deeper_and_replace_with(Expression*& node, const Token& token)
+{
+    Expression* old_right_child = node->right_child;
+    Expression* new_node = new Expression;
+    new_node->parent = node;
+    new_node->value = token;
+    new_node->left_child = old_right_child;
+    old_right_child->parent = new_node;
+    node->right_child = new_node;
+    node = new_node;    
+}
+
 Expression* Parser::build(const std::list<Token>& tokens)
 {
     Expression* current_node = new Expression;
@@ -25,35 +68,18 @@ Expression* Parser::build(const std::list<Token>& tokens)
         }
         else if (token.getType() == Type::PLUS || token.getType() == Type::MINUS)
         {
-            Expression* new_node = new Expression;
-            current_node->parent = new_node;
-            Expression* old_node = current_node;
-            current_node = new_node;
-            current_node->value = token;
-            current_node->left_child = old_node;
+            push_node_to_left_with_token(current_node, token);
         }
         else if (token.getType() == Type::MULTIPLY || token.getType() == Type::DIVIDE)
         {
             auto current_node_type = current_node->value.getType();
             if (current_node_type == Type::PLUS || current_node_type == Type::MINUS) //lower prio operators
             {
-                Expression* old_right_child = current_node->right_child;
-                Expression* new_node = new Expression;
-                new_node->parent = current_node;
-                new_node->value = token;
-                new_node->left_child = old_right_child;
-                old_right_child->parent = new_node;
-                current_node->right_child = new_node;
-                current_node = new_node;
+                push_right_node_deeper_and_replace_with(current_node, token);
             }
             else
             {
-                Expression* new_node = new Expression;
-                current_node->parent = new_node;
-                Expression* old_node = current_node;
-                current_node = new_node;
-                current_node->value = token;
-                current_node->left_child = old_node;
+                push_node_to_left_with_token(current_node, token);
             }
         }
         else if (token.getType() == Type::ENDOFFILE){}
@@ -65,9 +91,7 @@ Expression* Parser::build(const std::list<Token>& tokens)
     }
 
     Expression* top_node = current_node;
-
     while (top_node->parent != nullptr) top_node = top_node->parent;
-
     return top_node;
 }
 
