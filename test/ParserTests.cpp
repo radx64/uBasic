@@ -111,7 +111,7 @@ TEST(ParserShould, createCorrectTreeForPlusAndMultiplyOperators)
     Parser::destroy(expression);
 }
 
-TEST(ParserShould, DISABLED_handleMultipleOperatorsInCorrectOrder)
+TEST(ParserShould, handleMultipleOperatorsInCorrectOrder)
 {
     std::list<Token> input = 
     {
@@ -126,10 +126,10 @@ TEST(ParserShould, DISABLED_handleMultipleOperatorsInCorrectOrder)
     Expression* expression = Parser::build(input);
 
     /* Expected parse tree 
-          +
-         + 4         
-        1 *
-         2 3
+            +
+         1    +         
+            *  4
+           2 3
     */
 
     Parser::debug_traverse_tree(expression, 0);

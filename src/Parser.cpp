@@ -4,6 +4,11 @@
 #include "Expression.hpp"
 #include "Token.hpp"
 
+
+/*
+    TODO: Token replace methods need to be tested in UT. As there are much parent child operations that I can forget.
+*/
+
 /*
     push_node_to_left_with_token moves given node down and create one from token
     [1]  -> Token(+) ->  [+]
@@ -14,11 +19,17 @@
 void push_node_to_left_with_token(Expression*& node, const Token& token)
 {
     Expression* new_node = new Expression;
+    new_node->parent = node->parent;
     node->parent = new_node;
     Expression* old_node = node;
     node = new_node;
     node->value = token;
     node->left_child = old_node;
+    if(node->parent)
+    {
+        if (node->parent->left_child == old_node) node->parent->left_child = node;
+        if (node->parent->right_child == old_node) node->parent->right_child = node;
+    }
 }
 
 /*
@@ -27,10 +38,8 @@ void push_node_to_left_with_token(Expression*& node, const Token& token)
     1 1                  1 [*]
                           1
     Pointer passed to function will be modified (so *& is necessary)
-*/
 
-/*
-    TODO: With proper usage of push_node_to_left_with_token same behaviour can be achieved, 
+    [TODO]: With proper usage of push_node_to_left_with_token same behaviour can be achieved, 
     so I need to think about using it.Also i need better way to keep track of current node, 
     at least to be deterministic.
 */
@@ -88,6 +97,12 @@ Expression* Parser::build(const std::list<Token>& tokens)
             std::clog << "ERROR while building parse tree! Unknown token type" << std::endl;
         }
 
+        std::clog << "-------STEP:--------" << std::endl;
+        Expression* top_node = current_node;
+        while (top_node->parent != nullptr) top_node = top_node->parent;
+        debug_traverse_tree(top_node,0);
+        std::clog << "CN:"<< current_node->value.toString() << std::endl;
+        std::clog << "--------------------" << std::endl;
     }
 
     Expression* top_node = current_node;
@@ -104,10 +119,10 @@ void Parser::destroy(Expression* expression)
 
 void Parser::debug_traverse_tree(Expression* start, int depth)
 {
-    if (start->left_child != nullptr) debug_traverse_tree(start->left_child, depth + 1);
-    {
-        for (int i=0; i < depth; ++i) std::clog << "   "; 
-        std::clog << start->value.toString() << std::endl;
-    }
     if (start->right_child != nullptr) debug_traverse_tree(start->right_child, depth + 1);
+    
+    for (int i=0; i < depth; ++i) std::clog << "   "; 
+    std::clog << start->value.toString() << std::endl;
+    
+    if (start->left_child != nullptr) debug_traverse_tree(start->left_child, depth + 1);
 }
