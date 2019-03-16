@@ -12,7 +12,7 @@ public:
     //this can be a static method right now, so I don't even need this whole class thing
     static Expression* build(const std::list<Token>& tokens);
     static void destroy(Expression* expression);
-    static void debug_traverse_tree(Expression* start, int depth);
+    static void debug_traverse_tree(Expression* start, int depth = 0);
 };
 
 #endif  // PARSER_HPP_

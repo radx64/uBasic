@@ -153,3 +153,41 @@ TEST(ParserShould, handleMultipleOperatorsInCorrectOrder)
 
     Parser::destroy(expression);
 }
+
+TEST(ParserShould, handleMinusOperatorAfterDivide)
+{
+    std::list<Token> input = 
+    {
+        Token{Type::NUMBER, "1"},
+        Token{Type::MINUS},
+        Token{Type::NUMBER, "2"},
+        Token{Type::DIVIDE},
+        Token{Type::NUMBER, "3"}
+    };
+    Expression* expression = Parser::build(input);
+
+    /* Expected parse tree 
+         -          
+        1 /
+         2 3
+    */
+
+    EXPECT_EQ(expression->value, Token(Type::MINUS));
+    EXPECT_EQ(expression->parent, nullptr);
+
+    EXPECT_EQ(expression->left_child->value, Token(Type::NUMBER, "1"));
+    EXPECT_EQ(expression->left_child->parent->value, Token(Type::MINUS)); 
+
+    Expression* right_branch = expression->right_child;
+
+    EXPECT_EQ(right_branch->value, Token(Type::DIVIDE));
+    EXPECT_EQ(right_branch->parent->value, Token(Type::MINUS));
+
+    EXPECT_EQ(right_branch->left_child->value, Token(Type::NUMBER, "2"));
+    EXPECT_EQ(right_branch->left_child->parent->value, Token(Type::DIVIDE)); 
+
+    EXPECT_EQ(right_branch->right_child->value, Token(Type::NUMBER, "3"));
+    EXPECT_EQ(right_branch->right_child->parent->value, Token(Type::DIVIDE)); 
+
+    Parser::destroy(expression);
+}

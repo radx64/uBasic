@@ -21,32 +21,32 @@ std::string sanitize(std::string str)
     return output;
 }
 
-TEST_F(InterpreterShould, DISABLED_addTwoNumbers)
+TEST_F(InterpreterShould, addTwoNumbers)
 {
     interpreter_.run("2+2");
     EXPECT_EQ(sanitize(output_.str()), "4");
 }
 
-TEST_F(InterpreterShould, DISABLED_addTwoNumbersWithSpaces)
+TEST_F(InterpreterShould, addTwoNumbersWithSpaces)
 {
     interpreter_.run("1 + 7");
     EXPECT_EQ(sanitize(output_.str()), "8");
 }
 
-TEST_F(InterpreterShould, DISABLED_addThreeNumbers)
+TEST_F(InterpreterShould, addThreeNumbers)
 {
     interpreter_.run("1 + 2 + 3");
     EXPECT_EQ(sanitize(output_.str()), "6");
 }
 
-TEST_F(InterpreterShould, DISABLED_multiplyAndAddInCorrectOrder)
+TEST_F(InterpreterShould, multiplyAndAddInCorrectOrder)
 {
     interpreter_.run("1 + 2 * 3");
     EXPECT_EQ(sanitize(output_.str()), "7");
 }
 
-TEST_F(InterpreterShould, DISABLED_multiplyAndAddInCorrectOrderWhenMultiplicationFirst)
+TEST_F(InterpreterShould, multiplyAndAddInCorrectOrderWhenMultiplicationFirst)
 {
     interpreter_.run("1 * 2 + 3");
-    EXPECT_EQ(sanitize(output_.str()), "7");
+    EXPECT_EQ(sanitize(output_.str()), "5");
 }
