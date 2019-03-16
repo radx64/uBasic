@@ -52,9 +52,6 @@ TEST(ParserShould, createCorrectTreeForPlusOperatorWithMoreElements)
     EXPECT_EQ(expression->value, Token(Type::PLUS));
     EXPECT_EQ(expression->parent, nullptr);
 
-    EXPECT_EQ(expression->left_child->value, Token(Type::PLUS));
-    EXPECT_EQ(expression->left_child->parent->value, Token(Type::PLUS)); 
-
     EXPECT_EQ(expression->right_child->value, Token(Type::NUMBER, "3"));
     EXPECT_EQ(expression->right_child->parent->value, Token(Type::PLUS)); 
 
@@ -94,10 +91,8 @@ TEST(ParserShould, createCorrectTreeForPlusAndMultiplyOperators)
 
     EXPECT_EQ(expression->left_child->value, Token(Type::NUMBER, "1"));
     EXPECT_EQ(expression->left_child->parent->value, Token(Type::PLUS)); 
-    EXPECT_EQ(expression->right_child->value, Token(Type::MULTIPLY));    
-    EXPECT_EQ(expression->right_child->parent->value, Token(Type::PLUS)); 
 
-     Expression* right_branch = expression->right_child;
+    Expression* right_branch = expression->right_child;
 
     EXPECT_EQ(right_branch->value, Token(Type::MULTIPLY));
     EXPECT_EQ(right_branch->parent->value, Token(Type::PLUS));
@@ -132,7 +127,29 @@ TEST(ParserShould, handleMultipleOperatorsInCorrectOrder)
            2 3
     */
 
-    Parser::debug_traverse_tree(expression, 0);
+    EXPECT_EQ(expression->value, Token(Type::PLUS));
+    EXPECT_EQ(expression->parent, nullptr);
+
+    EXPECT_EQ(expression->left_child->value, Token(Type::NUMBER, "1"));
+    EXPECT_EQ(expression->left_child->parent->value, Token(Type::PLUS)); 
+    Expression* right_branch = expression->right_child;
+
+    EXPECT_EQ(right_branch->value, Token(Type::PLUS));
+    EXPECT_EQ(right_branch->parent->value, Token(Type::PLUS));
+
+    EXPECT_EQ(right_branch->left_child->value, Token(Type::MULTIPLY));
+    EXPECT_EQ(right_branch->left_child->parent->value, Token(Type::PLUS));
+
+    EXPECT_EQ(right_branch->right_child->value, Token(Type::NUMBER, "4"));
+    EXPECT_EQ(right_branch->right_child->parent->value, Token(Type::PLUS));
+
+    Expression* right_left_branch = expression->right_child->left_child;
+
+    EXPECT_EQ(right_left_branch->left_child->value, Token(Type::NUMBER, "2"));
+    EXPECT_EQ(right_left_branch->left_child->parent->value, Token(Type::MULTIPLY));
+
+    EXPECT_EQ(right_left_branch->right_child->value, Token(Type::NUMBER, "3"));
+    EXPECT_EQ(right_left_branch->right_child->parent->value, Token(Type::MULTIPLY));
 
     Parser::destroy(expression);
 }

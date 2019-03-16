@@ -96,13 +96,6 @@ Expression* Parser::build(const std::list<Token>& tokens)
         {   
             std::clog << "ERROR while building parse tree! Unknown token type" << std::endl;
         }
-
-        std::clog << "-------STEP:--------" << std::endl;
-        Expression* top_node = current_node;
-        while (top_node->parent != nullptr) top_node = top_node->parent;
-        debug_traverse_tree(top_node,0);
-        std::clog << "CN:"<< current_node->value.toString() << std::endl;
-        std::clog << "--------------------" << std::endl;
     }
 
     Expression* top_node = current_node;
