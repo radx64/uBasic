@@ -1,5 +1,7 @@
-#include <gtest/gtest.h>
+#include <algorithm>
 #include <sstream>
+
+#include <gtest/gtest.h>
 
 #include "Interpreter.hpp"
 
